@@ -1,18 +1,29 @@
+<script setup>
+import AsideItem from '@/components/layout/AsideItem.vue';
+import HeaderItem from '@/components/layout/HeaderItem.vue';
+</script>
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="common-layout" style="width: 100vw; height: 100vh;">
+    <el-container style=" height: 100%;">
+      <el-aside width="auto"><aside-item></aside-item></el-aside>
+      <el-container>
+        <el-header><header-item></header-item></el-header>
+        <el-main>
+            <router-view></router-view>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
-
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+<style lang='less' scoped>
+    .el-header{
+        background-color: black;
+        color: white;
+    }
+    .el-main{
+        background-color: antiquewhite;
+    }
+    .el-aside{
+        background-color: skyblue;
+    }
+</style>
