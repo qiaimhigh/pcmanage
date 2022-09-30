@@ -1,7 +1,9 @@
 <script setup>
-import * as echarts from "echarts";
-import { reactive, onMounted, ref } from "vue";
+// import * as echarts from "echarts";
+import { reactive, onMounted } from "vue";
 import { getHomeData } from "@/api/api";
+// 引入封装的echarts组件
+import EchartsComponent from "./EchartsComponent.vue";
 const tableData = reactive({
   data: [
     {
@@ -88,9 +90,23 @@ const countData = reactive({
     },
   ],
 });
-const lineEcharts = ref(null);
-const zhuEcharts = ref(null);
-const circleEcharts = ref(null);
+// const lineEcharts = ref(null);
+// const zhuEcharts = ref(null);
+// const circleEcharts = ref(null);
+// echarts数据
+const echartsData = reactive({
+  lineEcharts: {
+    xData: [],
+    series: [],
+  },
+  circleEcharts: {
+    series: [],
+  },
+  zhuEcharts: {
+    xData: [],
+    series: [],
+  },
+});
 onMounted(() => {
   getHomeData().then((res) => {
     console.log(res);
@@ -100,7 +116,6 @@ onMounted(() => {
       const xAxis = lineData.date;
       const legend = Object.keys(lineData.data[0]);
       let series = [];
-
       legend.forEach((element) => {
         series.push({
           name: element,
@@ -108,97 +123,139 @@ onMounted(() => {
           data: lineData.data.map((item) => item[element]),
         });
       });
-      // 折线图的配置项
-      const option = {
-        series,
-        xAxis: {
+      echartsData.lineEcharts.series = series;
+      echartsData.lineEcharts.xData = 
+        {
           type: "category",
           data: xAxis,
+        }
+      ;
+      echartsData.zhuEcharts.xData = 
+        {
+          type: "category",
+          data: res.data.data.userData.map((item) => item.date),
+        }
+      ;
+      echartsData.zhuEcharts.series = [
+        {
+          name: "新增用户",
+          data: res.data.data.userData.map((item) => item.new),
+          type: "bar",
         },
-        yAxis: {},
-        legend: {
-          data: legend,
+        {
+          name: "活跃用户",
+          data: res.data.data.userData.map((item) => item.active),
+          type: "bar",
         },
-        tooltip: {
-          trigger: "axis",
-        },
-      };
-      console.log(lineEcharts.value);
-      const E = echarts.init(lineEcharts.value);
-      console.log(E);
-      E.setOption(option);
-      //  柱状图
-      const option_zhu = {
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "shadow",
-          },
-        },
-        legend: {
-          textStyle: {
-            color: "#333",
-          },
-        },
-        grid: {
-          left: "20%",
-        },
-        xAxis: [
-          {
-            type: "category",
-            data: res.data.data.userData.map((item) => item.date),
-          },
-        ],
-        yAxis: [
-          {
-            type: "value",
-          },
-        ],
-        series: [
-          {
-            name: "新增用户",
-            data: res.data.data.userData.map((item) => item.new),
-            type: "bar",
-          },
-          {
-            name: "活跃用户",
-            data: res.data.data.userData.map((item) => item.active),
-            type: "bar",
-          },
-        ],
-      };
-      const E2 = echarts.init(zhuEcharts.value);
-      E2.setOption(option_zhu);
+      ];
       // 饼状图
-      const option_circle = {
-        title: {
-          left: "center",
-        },
-        tooltip: {
-          trigger: "item",
-        },
-        legend: {
-          orient: "vertical",
-          left: "left",
-        },
-        series: [
-          {
-            // name: "Access From",
-            type: "pie",
-            radius: "50%",
-            data: res.data.data.videoData,
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)",
-              },
+      echartsData.circleEcharts.series = [
+        {
+          // name: "Access From",
+          type: "pie",
+          radius: "50%",
+          data: res.data.data.videoData,
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: "rgba(0, 0, 0, 0.5)",
             },
           },
-        ],
-      };
-      const E3 = echarts.init(circleEcharts.value)
-      E3.setOption(option_circle)
+        },
+      ];
+            // 折线图的配置项
+      // const option = {
+      //   series,
+      //   xAxis: {
+      //     type: "category",
+      //     data: xAxis,
+      //   },
+      //   yAxis: {},
+      //   legend: {
+      //     data: legend,
+      //   },
+      //   tooltip: {
+      //     trigger: "axis",
+      //   },
+      // };
+      // console.log(lineEcharts.value);
+      // const E = echarts.init(lineEcharts.value);
+      // console.log(E);
+      // E.setOption(option);
+      //  柱状图
+
+      // const option_zhu = {
+      //   tooltip: {
+      //     trigger: "axis",
+      //     axisPointer: {
+      //       type: "shadow",
+      //     },
+      //   },
+      //   legend: {
+      //     textStyle: {
+      //       color: "#333",
+      //     },
+      //   },
+      //   grid: {
+      //     left: "20%",
+      //   },
+      //   xAxis: [
+      //     {
+      //       type: "category",
+      //       data: res.data.data.userData.map((item) => item.date),
+      //     },
+      //   ],
+      //   yAxis: [
+      //     {
+      //       type: "value",
+      //     },
+      //   ],
+      //   series: [
+      // {
+      //   name: "新增用户",
+      //   data: res.data.data.userData.map((item) => item.new),
+      //   type: "bar",
+      // },
+      // {
+      //   name: "活跃用户",
+      //   data: res.data.data.userData.map((item) => item.active),
+      //   type: "bar",
+      // },
+      //   ],
+      // };
+      // const E2 = echarts.init(zhuEcharts.value);
+      // E2.setOption(option_zhu);
+
+      // const option_circle = {
+      //   title: {
+      //     left: "center",
+      //   },
+      //   tooltip: {
+      //     trigger: "item",
+      //   },
+      //   legend: {
+      //     orient: "vertical",
+      //     left: "left",
+      //   },
+      //   series: [
+      //     {
+      //       // name: "Access From",
+      //       type: "pie",
+      //       radius: "50%",
+      //       data: res.data.data.videoData,
+      //       emphasis: {
+      //         itemStyle: {
+      //           shadowBlur: 10,
+      //           shadowOffsetX: 0,
+      //           shadowColor: "rgba(0, 0, 0, 0.5)",
+      //         },
+      //       },
+      //     },
+      //   ],
+      // };
+      // const E3 = echarts.init(circleEcharts.value)
+      // E3.setOption(option_circle)
     }
   });
 });
@@ -260,14 +317,27 @@ onMounted(() => {
         </el-card>
       </div>
       <el-card style="height: 280px; width: 100%">
-        <div ref="lineEcharts" style="width: 100%; height: 280px"></div>
+        <echarts-component
+          :echartsData="echartsData.lineEcharts"
+          style="width: 100%; height: 280px"
+        ></echarts-component>
+        <!-- <div ref="lineEcharts" style="width: 100%; height: 280px"></div> -->
       </el-card>
       <div class="graph">
         <el-card style="height: 260px">
-          <div ref="zhuEcharts" style="height: 260px; width: 100%"></div>
+          <echarts-component
+            :echartsData="echartsData.zhuEcharts"
+            style="width: 100%; height: 260px"
+          ></echarts-component>
+          <!-- <div ref="zhuEcharts" style="height: 260px; width: 100%"></div> -->
         </el-card>
         <el-card style="height: 260px">
-          <div ref="circleEcharts" style="width: 100%; height: 260px"></div>
+          <echarts-component
+            :isAxisChart="false"
+            :echartsData="echartsData.circleEcharts"
+            style="width: 100%; height: 260px"
+          ></echarts-component>
+          <!-- <div ref="circleEcharts" style="width: 100%; height: 260px"></div> -->
         </el-card>
       </div>
     </el-col>

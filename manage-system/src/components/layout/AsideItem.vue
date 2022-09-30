@@ -1,12 +1,7 @@
 <script setup>
-
-
-
-
 import { useRouter } from "vue-router";
 import { computed, reactive,onMounted } from "vue";
 import { useStore } from "vuex";
-// import { getMenu } from "@/api/api"; 
 
 const store = useStore();
 // let isCollapse = ref(false);
@@ -74,9 +69,6 @@ const routerPush = (path)=>{
     router.push(path)
 }
 onMounted(()=>{
-    // getMenu().then((res)=>{
-    //     console.log(res);
-    // })
 })
 </script>
 <template>
