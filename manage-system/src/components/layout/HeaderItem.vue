@@ -1,19 +1,37 @@
 <script setup>
 import { Menu, UserFilled } from "@element-plus/icons-vue";
-import { useStore } from "vuex";
+import { useStore,mapState } from "vuex";
+import { computed } from 'vue'
+
 const store = useStore();
-function changeAside(){
-    store.commit('changeSide')
+function changeAside() {
+  store.commit("changeSide");
 }
+let storeState = {};
+const storeFns = mapState(['tabsList']);
+Object.keys(storeFns).forEach((key) => {
+  const fn = storeFns[key].bind({ $store: store });
+  storeState[key] = computed(fn);
+});
+let { tabsList } = storeState;
+console.log(tabsList);
 </script>
 <template>
   <header>
     <div class="h-top">
       <el-button @click="changeAside" :icon="Menu" plain></el-button>
-      <h3>首页</h3>
+      <!-- <h3>首页</h3> -->
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{path: item.path}" v-for="item in tabsList" :key="item.label">{{
+          item.label
+        }}</el-breadcrumb-item>
+        <!-- <el-breadcrumb-item>promotion management</el-breadcrumb-item>
+        <el-breadcrumb-item>promotion list</el-breadcrumb-item>
+        <el-breadcrumb-item>promotion detail</el-breadcrumb-item> -->
+      </el-breadcrumb>
     </div>
     <div class="r-top">
-      <el-dropdown  trigger="click">
+      <el-dropdown trigger="click">
         <el-avatar
           :icon="UserFilled"
           src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
@@ -44,7 +62,7 @@ header {
       margin: 5px 10px;
     }
   }
-  .r-top{
+  .r-top {
     display: flex;
     align-items: center;
     height: 100%;

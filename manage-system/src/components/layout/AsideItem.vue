@@ -9,7 +9,7 @@ let asideData = reactive({
     data: [
         {
             path: '/',
-            name: '首页',
+            name: 'home',
             icon: 's-home',
             url: 'Home/Home',
             label: '首页'
@@ -65,8 +65,11 @@ const handleOpen = (key,keyPath)=>{
     console.log(key,keyPath);
 }
 const router = useRouter()
-const routerPush = (path)=>{
-    router.push(path)
+const routerPush = (item)=>{
+    router.push({
+        path: item.path
+    })
+    store.commit('selectMenu',item)
 }
 onMounted(()=>{
 })
@@ -83,7 +86,7 @@ onMounted(()=>{
     @close="handleClose"
   >
     <h3>{{!store.state.isShowSide ? '通用后台管理系统' : '后台'}}</h3>
-    <el-menu-item @click="routerPush(item.path)" v-for="item in noChildren" :index="item.path" :key="item.path">
+    <el-menu-item @click="routerPush(item)" v-for="item in noChildren" :index="item.path" :key="item.path">
         <el-icon><location /></el-icon>
       <template #title>
         <span>{{item.label}}</span>
@@ -96,7 +99,7 @@ onMounted(()=>{
       </template>
       <el-menu-item-group>
         <!-- <template #title><span>Group One</span></template> -->
-        <el-menu-item v-for="cItem in item.children" :index="cItem.path" :key="cItem.path">
+        <el-menu-item @click="routerPush(cItem)" v-for="cItem in item.children" :index="cItem.path" :key="cItem.path">
             <el-icon><location /></el-icon>
             <span>{{cItem.label}}</span>
         </el-menu-item>
