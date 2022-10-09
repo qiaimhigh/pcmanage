@@ -85,7 +85,7 @@ onMounted(()=>{
     @open="handleOpen"
     @close="handleClose"
   >
-    <h3>{{!store.state.isShowSide ? '通用后台管理系统' : '后台'}}</h3>
+    <h3>{{!store.state.isShowSide ? '后台管理系统' : '后台'}}</h3>
     <el-menu-item @click="routerPush(item)" v-for="item in noChildren" :index="item.path" :key="item.path">
         <el-icon><location /></el-icon>
       <template #title>

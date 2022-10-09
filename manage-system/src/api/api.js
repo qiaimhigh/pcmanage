@@ -24,3 +24,27 @@ export function getHomeData(){
         method: 'post'
     })
 }
+
+// 获取用户数据
+export function getUserList(){
+    return axios.request({
+        url: '/user/getUser',
+        method: 'post'
+    })
+}
+// 提交用户信息
+export function confirmUser(data){
+    return axios.request({
+        url: '/user/edit',
+        method: 'post',
+        data
+    })
+}
+// 增加用户信息
+export function addUser(data){
+    return axios.request({
+        url: '/user/add',
+        method: 'post',
+        data
+    })
+}
