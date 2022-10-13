@@ -14,7 +14,7 @@ let props = defineProps({
   tableLabel:{
     type: Array
   }
-});
+}); 
 const emit = defineEmits([]);
 function removeOpe(row) {
   emit("removeRow", row);
@@ -26,9 +26,9 @@ function changeOpe(row) {
     console.log("change" + row);
  
 }
-function changePages(page) {
-  emit("changePage", page);
-}
+// function changePages(page) {
+//   emit("changePage", page);
+// }
 console.log(props.tableLabel);
 </script>
 <template>
@@ -60,14 +60,14 @@ console.log(props.tableLabel);
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
+    <!-- <el-pagination
       :page-size="20"
       class="pager"
       layout="prev, pager, next"
       :page-count="config.total"
       :current-page="config.page"
       @update:current-page="changePages"
-    />
+    /> -->
   </div>
 </template>
 <style lang="less">

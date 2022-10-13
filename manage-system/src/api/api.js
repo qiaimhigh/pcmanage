@@ -1,8 +1,15 @@
 import axios from './request'
-
+// 登录接口
+export function userLogin(data){
+    return axios.request({
+        url: '/login',
+        method: 'post',
+        data
+    })
+}
 // 注册接口
 export function register(data){
-    return axios({
+    return axios.request({
         url: "/register",
         method: 'post',
         data
@@ -44,6 +51,15 @@ export function confirmUser(data){
 export function addUser(data){
     return axios.request({
         url: '/user/add',
+        method: 'post',
+        data
+    })
+}
+
+// 删除用户信息
+export function deleUser(data){
+    return axios.request({
+        url: '/user/delUser',
         method: 'post',
         data
     })

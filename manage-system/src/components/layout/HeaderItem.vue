@@ -2,6 +2,9 @@
 import { Menu, UserFilled } from "@element-plus/icons-vue";
 import { useStore,mapState } from "vuex";
 import { computed } from 'vue'
+import Cookie from 'js-cookie'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 
 const store = useStore();
 function changeAside() {
@@ -14,7 +17,16 @@ Object.keys(storeFns).forEach((key) => {
   storeState[key] = computed(fn);
 });
 let { tabsList } = storeState;
-console.log(tabsList);
+// console.log(tabsList);
+let router = useRouter()
+function escLogin(){
+  Cookie.remove('token');
+  Cookie.remove('menu')
+  router.push({
+    path: '/login'
+  })
+  ElMessage.success('退出成功')
+}
 </script>
 <template>
   <header>
@@ -41,7 +53,7 @@ console.log(tabsList);
         <template #dropdown>
           <el-dropdown-menu divided>
             <el-dropdown-item><span>个人中心</span></el-dropdown-item>
-            <el-dropdown-item><span>退出登录</span></el-dropdown-item>
+            <el-dropdown-item @click="escLogin"><span >退出登录</span></el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>

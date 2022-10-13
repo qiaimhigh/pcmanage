@@ -46,8 +46,10 @@ class HttpRequest{
     }
     // 创建实例
     request(options){
+        console.log(options.data);
         const instance = axios.create();
         options = { ...options,...this.getConfig() }
+        console.log(options);
         this.interceptors(instance);
         return instance(options)
     }

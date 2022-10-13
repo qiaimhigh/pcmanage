@@ -1,8 +1,9 @@
 <script setup>
 import FormComponent from "./FormComponent.vue";
-import { getUserList,confirmUser,addUser } from '@/api/api'
+import { getUserList,confirmUser,addUser,deleUser } from '@/api/api'
 import { onMounted, reactive, ref } from "vue";
 import TableComponent from "./TableComponent.vue";
+import { ElMessage} from 'element-plus'
 let isShow = ref(false);
 let operateType = ref("add");
 let operateFormLabel = reactive({
@@ -99,6 +100,7 @@ let config = reactive({
   page: 1,
   total: 30
 })
+
 // 获取用户信息
 function getList(name = ''){
   config.isLoading = true;
@@ -117,9 +119,15 @@ function getList(name = ''){
     console.log(tableData.data);
   })
 }
+// 更新用户数据
+function changeForm(res){
+  operateForm.data = res;
+  console.log(operateForm.data);
+}
 // 提交用户信息
 function confirm(){
-    if(operateType.value === 'edit'){
+  console.log(operateType.value);
+    if(operateType.value == 'edit'){
       confirmUser(operateForm.data).then(res=>{
         console.log(res);
         isShow.value = false;
@@ -130,6 +138,7 @@ function confirm(){
         console.log(res);
         isShow.value = false;
         getList()
+        
       })
     }
 }
@@ -151,9 +160,17 @@ function changeUser(row){
   operateType.value = 'edit';
   operateForm = row;
 }
-function deleUser(){
-
+// 删除用户信息
+function deeUser(res){
+  deleUser(res).then(res=>{
+    console.log(res);
+    if(res.data.code == 20000){
+      getList()
+      ElMessage.success('删除成功')
+    }
+  })
 }
+
 onMounted(()=>{
   getList();
 })
@@ -186,7 +203,7 @@ onMounted(()=>{
     :tableLabel="tableLabel.data"
     :config="config"
     @changePage="getList(val)"
-    @removeRow="deleUser"
+    @removeRow="deeUser"
     @changeOpe="changeUser"
   ></table-component>
 </template>

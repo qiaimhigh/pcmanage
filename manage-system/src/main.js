@@ -11,6 +11,7 @@ const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
   }
+store.commit('addRoute',router)
 app.use(store).use(router).use(ElementPlus).mount('#app')
 
 

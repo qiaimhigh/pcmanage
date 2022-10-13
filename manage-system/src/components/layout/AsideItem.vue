@@ -2,55 +2,13 @@
 import { useRouter } from "vue-router";
 import { computed, reactive,onMounted } from "vue";
 import { useStore } from "vuex";
-
+import Cookie from 'js-cookie'
 const store = useStore();
 // let isCollapse = ref(false);
 let asideData = reactive({
-    data: [
-        {
-            path: '/',
-            name: 'home',
-            icon: 's-home',
-            url: 'Home/Home',
-            label: '首页'
-        },
-        {
-            path: '/mall',
-            name: '商品管理',
-            icon: 'video-play',
-            url: 'Home/Home',
-            label: '商品管理'
-        },
-        {
-            path: '/user',
-            name: '用户管理',
-            icon: 's-home',
-            url: 'Home/Home',
-            label: '用户管理'
-        },
-        {
-            label: '其他',
-            icon: 'location',
-            path: '/fin',
-            children:[
-                {
-                    path: '/page1',
-                    name: '页面1',
-                    icon: 'setting',
-                    url: 'Other/PageOne',
-                    label: '页面1'
-                },
-                {
-                    path: '/page2',
-                    name: '页面2',
-                    icon: 'setting',
-                    url: 'Other/pageTwo',
-                    label: '页面2'
-                }
-            ]
-        }
-    ]
+    data: JSON.parse(Cookie.get('menu')) || store.state.asideMenu 
 })
+console.log(asideData.data);
 const noChildren = computed(()=>{
     return asideData.data.filter(item => !item.children)
 })

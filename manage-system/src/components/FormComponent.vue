@@ -25,8 +25,18 @@ let formLabel = reactive(props.formLabel)
 const emit = defineEmits(['update']);
 console.log(formData);
 function sendUpdate(){
+  formData.birth = formatDateTime(new Date(formData.birth).getTime());
   emit('update',formData);
-}
+} 
+function  formatDateTime(inputTime) {
+    var date = new Date(inputTime);
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? ('0' + m) : m;
+    var d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    return  y + '-' + m + '-' + d ;
+  }
 </script>
 <template>
   <el-form ref="form" label-width="100px" :module="formData" :inline="inline">
@@ -49,9 +59,11 @@ function sendUpdate(){
       <el-date-picker
         v-if="item.type === 'date'"
         type="date"
-        value-format="yyyy-MM-dd"
-        placeholder="请选择日期"
         v-model="formData[item.model]"
+        format="YYYY-MM-DD"
+        placeholder="请选择日期"
+       
+        :default-value="new Date(2022, 9, 1)"
         @change="sendUpdate"
       ></el-date-picker>
       <el-select

@@ -59,6 +59,7 @@ export default {
    * @return {{code: number, data: {message: string}}}
    */
   createUser: config => {
+    console.log(config);
     const { name, addr, age, birth, sex } = JSON.parse(config.body)
     console.log(JSON.parse(config.body))
     List.unshift({
@@ -82,7 +83,9 @@ export default {
    * @return {*}
    */
   deleteUser: config => {
-    const { id } = param2Obj(config.url)
+    console.log(config);
+    const { id } = JSON.parse(config.body)
+    console.log(id);
     if (!id) {
       return {
         code: -999,
