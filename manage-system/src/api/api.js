@@ -1,10 +1,11 @@
 import axios from './request'
 // 登录接口
 export function userLogin(data){
+    console.log(data);
     return axios.request({
-        url: '/login',
+        url: '/api/login',
         method: 'post',
-        data
+        data : JSON.parse(JSON.stringify(data)),
     })
 }
 // 注册接口

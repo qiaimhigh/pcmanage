@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref,toRaw } from 'vue';
 import { useRouter } from 'vue-router'
 import Cookie from 'js-cookie'
 import { userLogin } from '@/api/api'
@@ -30,9 +30,10 @@ const submitForm =  (form)=>{
   if(!form) return ;
   console.log(form);
   form.validate(async (isValid)=>{
-    console.log(isValid);
+    // console.log(isValid);
     if(isValid){
-      let res = await userLogin(userInf);
+      console.log(toRaw(userInf) );
+      let res = await userLogin(toRaw(userInf));
       console.log(res)
       if(res.data.code == 200){
         Cookie.set('token',res.data.data.token)

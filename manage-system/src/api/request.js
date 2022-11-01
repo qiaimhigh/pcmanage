@@ -11,7 +11,8 @@ import axios from "axios";
 
 // export default instance;
 
-const baseUrl = '/api';
+// const baseUrl = '/api';
+const baseUrl = 'http://127.0.0.1:3100';
 class HttpRequest{
     constructor(baseUrl){
         this.baseUrl = baseUrl;
@@ -46,7 +47,8 @@ class HttpRequest{
     }
     // 创建实例
     request(options){
-        console.log(options.data);
+        console.log(options);
+        // console.log(options.data);
         const instance = axios.create();
         options = { ...options,...this.getConfig() }
         console.log(options);
